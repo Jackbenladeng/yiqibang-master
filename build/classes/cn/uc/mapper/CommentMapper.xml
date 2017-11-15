@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.uc.mapper.CommentMapper">
+ <!-- cache标签用进行mybatis的某个mapper文件的sql语句对象的二级缓存 
+      mapper文件范围内的所有select的sql语句执行结果都会被缓存-->
+      <!-- eviction回收策略   flushInterval刷新间隔时间ms,readOnly对象的读写属性 size会多缓存对象的个数-->
+   <cache 
+	   eviction="LRU"
+	   flushInterval="60000"
+	   readOnly="false"
+	   size="300"
+   />
+    <!-- 获取所有评论 -->
+    <select id="selectAll" resultMap="CommentMap">
+       select * from t_comment
+    </select>
+    
+    <resultMap type="Comment" id="CommentMap">
+      <id property="id" column="id"/>
+      <result property="content" column="c_content"/>
+      <result property="thumbsCount" column="c_thumbscount"/>
+      <result property="createTime" column="c_createtime"/>
+      <result property="userId" column="t_u_id"/>
+      <result property="newsId" column="t_n_id"/>
+    </resultMap>
+   <!-- 删除 --> 
+  <!-- <delete id="deleteByCondition" parameterType="java.lang.Integer" >
+     delete  from t_comment
+   </delete> -->  
+   <!-- 根据新闻id删除评论 -->
+   <delete id="deleteByCondition" parameterType="cn.uc.beans.Comment">
+     delete from t_comment 
+     <trim prefix="where" prefixOverrides="and|or">
+     <choose>  
+     <when test="newsId!=null">
+     and t_n_id = #{newsId}     
+     </when>
+     <when test="userId!=null">
+     and t_u_id = #{userId}
+     </when>
+     </choose>
+     
+     </trim>
+   
+   </delete>
+   <insert id="insert" parameterType="cn.uc.beans.Comment">
+   insert into t_comment(c_content,t_n_id,t_u_id,c_thumbscount,c_createtime)
+    values(#{content},#{newsId},#{userId},#{thumbsCount},#{createTime})
+  
+   <trim prefix="(" suffix=")" suffixOverrides="," >
+   <if test = "id !=null">   id </if>
+   <if test = "newsId!=null">t_n_id</if>
+   <if test = "userId!=null">t_u_id</if>
+   <if test = "content!=null" >c_content </if>
+   <if test = "createtime!=null">c_createtime</if>
+   <if test = "thumbsCount!=null">c_thumbscount</if>
+   </trim>
+   <trim prefix="values (" suffix=")" suffixOverrides="," >
+   <if test="newsId=!null"> #{newsId}</if>
+   <if test="userId=!null"> #{userId}</if>
+   <if test="content=!null"> #{content}</if>
+   <if test="createtime=!null"> #{createTime}</if>
+   <if test="thumbsCount=!null"> #{thumbsCount}</if>
+   </trim>
+   </insert>
+   
+   
+   
+    
+</mapper>

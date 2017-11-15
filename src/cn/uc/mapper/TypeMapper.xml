@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.uc.mapper.TypeMapper">
+    <!-- 获取所有类型-->
+    <select id="selectAll" resultType="Type">
+       select * from t_type
+    </select>
+    
+    <!-- 根据id获取类型 -->
+    <select id="selectByPrimaryKey" resultType="Type">
+    select * from t_type where id = #{id}
+    
+    </select>
+    </mapper>

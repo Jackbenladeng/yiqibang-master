@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.uc.mapper.PicMapper">
+    <!-- 插入图片-->
+    <insert id="insertPic" parameterType="Pic">
+      insert into t_pic (id, t_n_id, p_path, p_info, p_author, p_source) values (#{id},#{t_n_id},#{p_path},#{p_info},#{p_author},#{p_source})
+      
+    </insert>
+    
+    <!-- 删除-->
+    <delete id="deleteByCondition" parameterType="Pic">
+    delete  from t_pic where id=#{id}
+    
+    </delete>
+    </mapper>
